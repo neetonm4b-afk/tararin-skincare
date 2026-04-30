@@ -1,0 +1,2644 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TARARIN — 肌への、本質。</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   CSS VARIABLES — デザイントークン
+   ============================================================ */
+:root {
+  /* Colors */
+  --ink:        #0D0D0D;
+  --ink-soft:   #1A1A1A;
+  --ink-muted:  #2A2A2A;
+  --white:      #FFFFFF;
+  --off-white:  #C9EDE3;
+  --gold:       #2A2A2A;
+  --gold-light: #555555;
+  --gray-800:   #3A3A3A;
+  --gray-500:   #7A7A7A;
+  --gray-300:   #CECECE;
+  --gray-100:   #ECECEC;
+  --warm-white: #C9EDE3;
+
+  /* Typography */
+  --font-display: 'DM Sans', 'Noto Sans JP', sans-serif;
+  --font-body:    'DM Sans', 'Noto Sans JP', sans-serif;
+
+  /* Spacing (8px base grid) */
+  --sp-1: 8px;
+  --sp-2: 16px;
+  --sp-3: 24px;
+  --sp-4: 32px;
+  --sp-6: 48px;
+  --sp-8: 64px;
+  --sp-16: 128px;
+
+  /* Border */
+  --radius: 4px;
+  --radius-lg: 8px;
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--white);
+  color: var(--ink);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { display: block; max-width: 100%; }
+
+a { text-decoration: none; color: inherit; }
+em { font-style: normal; }
+
+/* ============================================================
+   UTILITY CLASSES
+   ============================================================ */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 var(--sp-4);
+}
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 5vw, 54px);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.section-title em {
+  color: var(--gold);
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes line-grow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+
+.fade-up {
+  opacity: 0;
+  animation: fade-up .8s ease forwards;
+}
+.delay-1 { animation-delay: .15s; }
+.delay-2 { animation-delay: .3s; }
+.delay-3 { animation-delay: .45s; }
+.delay-4 { animation-delay: .6s; }
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-3) var(--sp-4);
+  border-bottom: 0.5px solid rgba(255,255,255,.08);
+  background: rgba(13,13,13,.85);
+  backdrop-filter: blur(12px);
+  transition: background .3s ease;
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.nav-logo img {
+  height: 80px;
+  width: auto;
+  display: block;
+}
+
+.nav-logo span { display: none; }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  transition: color .2s;
+}
+
+.nav-links a:hover { color: var(--white); }
+
+.nav-cta {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .06em;
+  padding: 9px 20px;
+  background: var(--gold);
+  color: var(--ink);
+  border-radius: var(--radius);
+  transition: background .2s;
+}
+
+.nav-cta:hover { background: var(--gold-light); }
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 22px;
+  height: 1.5px;
+  background: var(--white);
+  transition: .3s;
+}
+
+/* ============================================================
+   HERO SECTION — フルスクリーンスライダー
+   ============================================================ */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 560px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.hero-slider {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+.hero-slide.active { opacity: 1; }
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,.72) 0%,
+    rgba(0,0,0,.35) 55%,
+    rgba(0,0,0,.10) 100%
+  );
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 32px 80px;
+}
+
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: var(--sp-4);
+}
+
+.hero-eyebrow-line {
+  width: 28px;
+  height: 1px;
+  background: rgba(255,255,255,.6);
+}
+
+.hero-content .eyebrow {
+  color: rgba(255,255,255,.75);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(44px, 7vw, 88px);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: #FFFFFF;
+  margin-bottom: var(--sp-4);
+}
+
+.hero-title em {
+  display: block;
+  color: rgba(255,255,255,.85);
+}
+
+.hero-sub {
+  font-size: 15px;
+  color: rgba(255,255,255,.7);
+  line-height: 1.75;
+  max-width: 420px;
+  margin-bottom: var(--sp-4);
+}
+
+.hero-indicators {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.hero-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.35);
+  border: none;
+  cursor: pointer;
+  transition: background .3s, transform .3s;
+  padding: 0;
+}
+
+.hero-dot.active {
+  background: #FFFFFF;
+  transform: scale(1.25);
+}
+
+.hero-product-labels {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.hero-product-label {
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.35);
+  transition: color .3s;
+  padding-bottom: 2px;
+  border-bottom: 1px solid transparent;
+}
+
+.hero-product-label.active {
+  color: rgba(255,255,255,.9);
+  border-bottom-color: rgba(255,255,255,.6);
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: var(--sp-6);
+  right: 40px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-1);
+  color: rgba(255,255,255,.4);
+  font-size: 10px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(255,255,255,.4), transparent);
+}
+
+/* Primary CTA */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background: var(--ink);
+  color: #FFFFFF !important;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  transition: background .2s, transform .15s;
+}
+
+.btn-primary:hover {
+  background: var(--gray-800);
+  color: #FFFFFF !important;
+  transform: translateY(-1px);
+}
+}
+
+.btn-primary svg { transition: transform .2s; }
+.btn-primary:hover svg { transform: translateX(3px); }
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-up { opacity: 0; animation: fade-up .8s ease forwards; }
+.delay-1 { animation-delay: .15s; }
+.delay-2 { animation-delay: .3s; }
+.delay-3 { animation-delay: .45s; }
+.delay-4 { animation-delay: .6s; }
+
+/* ============================================================
+   HERO CTA SECTION（ヒーロー直下）
+   ============================================================ */
+.hero-cta-section {
+  padding: var(--sp-16) 0;
+  background: #FFFFFF;
+  border-top: 0.5px solid var(--gray-100);
+}
+
+.hero-cta-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-8);
+  align-items: center;
+}
+
+.hero-cta-img-wrap {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  aspect-ratio: 4/5;
+}
+
+.hero-cta-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-cta-badge {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(255,255,255,.92);
+  border-radius: 40px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(8px);
+}
+
+.hero-cta-badge-num {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.hero-cta-badge-label {
+  font-size: 11px;
+  color: var(--gray-800);
+  letter-spacing: .04em;
+}
+
+.hero-cta-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -.02em;
+  color: var(--ink);
+  margin-bottom: var(--sp-3);
+}
+
+.hero-cta-title em {
+  color: var(--gray-500);
+}
+
+.hero-cta-sub {
+  font-size: 15px;
+  color: var(--gray-800);
+  line-height: 1.8;
+  margin-bottom: var(--sp-6);
+}
+
+.hero-cta-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-6);
+}
+
+.hero-cta-link {
+  font-size: 13px;
+  color: var(--gray-500);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color .2s;
+}
+
+.hero-cta-link:hover { color: var(--ink); }
+
+.hero-cta-stats {
+  display: flex;
+  align-items: center;
+  padding-top: var(--sp-4);
+  border-top: 0.5px solid var(--gray-100);
+}
+
+.hero-cta-stat { flex: 1; text-align: center; }
+
+.hcs-divider {
+  width: 0.5px;
+  height: 36px;
+  background: var(--gray-100);
+}
+
+.hcs-num {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 4px;
+  letter-spacing: -.02em;
+}
+
+.hcs-num span { font-size: .55em; color: var(--gray-500); }
+.hcs-label { font-size: 11px; color: var(--gray-800); letter-spacing: .03em; }
+.hcs-note  { font-size: 10px; color: var(--gray-500); margin-top: 2px; }
+
+/* ============================================================
+   TRUST BAR
+   ============================================================ */
+.trust-bar {
+  border-top: 0.5px solid var(--gray-100);
+  border-bottom: 0.5px solid var(--gray-100);
+  padding: var(--sp-3) 0;
+  background: #C9EDE3;
+}
+
+.trust-bar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-8);
+  flex-wrap: wrap;
+}
+
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: 12px;
+  color: var(--gray-800);
+  letter-spacing: .03em;
+}
+
+.trust-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.trust-divider {
+  width: 1px;
+  height: 14px;
+  background: var(--gray-300);
+}
+
+/* ============================================================
+   FEATURES SECTION
+   ============================================================ */
+.features {
+  padding: var(--sp-16) 0;
+  background: var(--white);
+}
+
+.features-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-8);
+  align-items: end;
+  margin-bottom: var(--sp-8);
+}
+
+.features-header-right {
+  color: var(--gray-800);
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  border: 1px solid var(--gray-100);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--gray-100);
+}
+
+.feature-card {
+  background: var(--white);
+  padding: 0;
+  transition: background .25s;
+  cursor: default;
+  display: flex;
+  flex-direction: column;
+}
+
+.feature-card:hover { background: var(--off-white); }
+
+.feature-img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  position: relative;
+}
+
+.feature-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .5s ease;
+}
+
+.feature-card:hover .feature-img img {
+  transform: scale(1.04);
+}
+
+.feature-img-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(13,13,13,.3));
+}
+
+.feature-body {
+  padding: var(--sp-6);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.feature-number {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 400;
+  color: rgba(200,169,110,.35);
+  line-height: 1;
+  margin-bottom: var(--sp-3);
+  letter-spacing: -0.01em;
+}
+
+.feature-icon-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(200,169,110,.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--sp-3);
+}
+
+.feature-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: var(--sp-2);
+  line-height: 1.35;
+}
+
+.feature-desc {
+  font-size: 13px;
+  color: var(--gray-800);
+  line-height: 1.7;
+  flex: 1;
+}
+
+.feature-tag {
+  display: inline-block;
+  margin-top: var(--sp-3);
+  font-size: 10px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border-bottom: 1px solid rgba(200,169,110,.4);
+  padding-bottom: 2px;
+}
+
+/* ============================================================
+   STEPS SECTION (3-Step Routine)
+   ============================================================ */
+.steps {
+  padding: var(--sp-16) 0;
+  background: #FFFFFF;
+}
+
+.steps-header {
+  text-align: center;
+  margin-bottom: var(--sp-8);
+}
+
+.steps-header .section-title { color: var(--ink); }
+.steps-header .eyebrow { color: var(--gold); margin-bottom: var(--sp-2); }
+.steps-header p {
+  font-size: 14px;
+  color: var(--gray-800);
+  margin-top: var(--sp-3);
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-3);
+}
+
+.step-card {
+  background: var(--white);
+  border: 0.5px solid var(--gray-100);
+  border-radius: var(--radius-lg);
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  transition: border-color .25s, transform .25s;
+  display: flex;
+  flex-direction: column;
+}
+
+.step-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-3px);
+}
+
+.step-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .3s ease;
+  z-index: 1;
+}
+
+.step-card:hover::before { transform: scaleX(1); }
+
+.step-img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.step-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .5s ease;
+}
+
+.step-card:hover .step-img img {
+  transform: scale(1.05);
+}
+
+.step-body {
+  padding: var(--sp-6);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.step-num {
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 400;
+  color: var(--gray-300);
+  line-height: 1;
+  margin-bottom: var(--sp-2);
+}
+
+.step-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: var(--sp-1);
+}
+
+.step-title {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: var(--sp-2);
+}
+
+.step-desc {
+  font-size: 13px;
+  color: var(--gray-800);
+  line-height: 1.7;
+}
+
+.step-time {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: var(--sp-3);
+  font-size: 11px;
+  color: var(--gray-500);
+}
+
+.step-time-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+/* ============================================================
+   TESTIMONIALS SECTION
+   ============================================================ */
+.testimonials {
+  padding: var(--sp-16) 0;
+  background: #FFFFFF;
+}
+
+.testimonials-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: var(--sp-8);
+  flex-wrap: wrap;
+  gap: var(--sp-4);
+}
+
+.testimonials-header .section-title { color: var(--ink); }
+
+.rating-summary {
+  text-align: right;
+}
+
+.rating-num {
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 400;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.rating-stars {
+  display: flex;
+  gap: 3px;
+  justify-content: flex-end;
+  margin: 4px 0;
+}
+
+.star {
+  width: 14px;
+  height: 14px;
+  fill: var(--gold);
+}
+
+.rating-count {
+  font-size: 12px;
+  color: var(--gray-800);
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-3);
+}
+
+.testimonial-card {
+  background: var(--white);
+  border: 0.5px solid var(--gray-100);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  transition: border-color .2s;
+}
+
+.testimonial-card:hover { border-color: var(--gold); }
+
+.testimonial-stars {
+  display: flex;
+  gap: 3px;
+}
+
+.testimonial-text {
+  font-size: 14px;
+  color: var(--gray-800);
+  line-height: 1.75;
+  flex: 1;
+}
+
+.testimonial-text strong { color: var(--ink); font-weight: 500; }
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding-top: var(--sp-3);
+  border-top: 0.5px solid var(--gray-100);
+}
+
+.author-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--off-white);
+  border: 1px solid rgba(200,169,110,.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+
+.author-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.author-meta {
+  font-size: 11px;
+  color: var(--gray-500);
+}
+
+/* ============================================================
+   CTA SECTION
+   ============================================================ */
+.cta-section {
+  padding: var(--sp-16) 0;
+  background: #FFFFFF;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative lines */
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 0;
+  width: 100%;
+  height: 0.5px;
+  background: linear-gradient(to right, transparent, rgba(200,169,110,.3), transparent);
+}
+
+.cta-inner {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.cta-inner .eyebrow { margin-bottom: var(--sp-3); }
+
+.cta-title {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-bottom: var(--sp-4);
+}
+
+.cta-title em { color: var(--gold); }
+
+.cta-sub {
+  font-size: 15px;
+  color: var(--gray-800);
+  max-width: 480px;
+  margin: 0 auto var(--sp-8);
+  line-height: 1.7;
+}
+
+.cta-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-6);
+}
+
+/* Large CTA button */
+.btn-large {
+  padding: 16px 36px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: .06em;
+}
+
+.cta-guarantees {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+}
+
+.guarantee-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--gray-800);
+}
+
+.guarantee-check {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  padding: var(--sp-8) 0 var(--sp-4);
+  border-top: 0.5px solid rgba(255,255,255,.08);
+  background: var(--ink);
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: var(--sp-6);
+  padding-bottom: var(--sp-6);
+  border-bottom: 0.5px solid rgba(255,255,255,.06);
+  margin-bottom: var(--sp-4);
+}
+
+.footer-brand p {
+  font-size: 12px;
+  color: var(--gray-500);
+  line-height: 1.7;
+  margin-top: var(--sp-2);
+  max-width: 260px;
+}
+
+.footer-col-title {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  margin-bottom: var(--sp-3);
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.footer-links a {
+  font-size: 13px;
+  color: var(--gray-500);
+  transition: color .2s;
+}
+
+.footer-links a:hover { color: var(--white); }
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.footer-copy {
+  font-size: 11px;
+  color: var(--gray-800);
+}
+
+/* ============================================================
+   STICKY CTA BAR (mobile)
+   ============================================================ */
+.sticky-cta {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 99;
+  background: var(--ink-soft);
+  border-top: 0.5px solid rgba(255,255,255,.1);
+  padding: var(--sp-2) var(--sp-3);
+}
+
+.sticky-cta-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+
+.sticky-cta-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--white);
+}
+
+.sticky-cta-sub {
+  font-size: 11px;
+  color: var(--gray-500);
+}
+
+/* ============================================================
+   RESPONSIVE — TABLET & MOBILE
+   ============================================================ */
+@media (max-width: 900px) {
+  .hero-cta-inner { grid-template-columns: 1fr; }
+
+  .features-header { grid-template-columns: 1fr; }
+
+  .features-grid { grid-template-columns: 1fr 1fr; }
+
+  .steps-grid { grid-template-columns: 1fr; }
+
+  .testimonials-grid { grid-template-columns: 1fr; }
+
+  .footer-top { grid-template-columns: 1fr 1fr; }
+
+  .trust-bar-inner { gap: var(--sp-4); }
+
+  .trust-divider { display: none; }
+}
+
+@media (max-width: 600px) {
+  .container { padding: 0 var(--sp-3); }
+
+  .nav-links { display: none; }
+
+  .nav-toggle { display: flex; }
+
+  .hero-title { font-size: clamp(36px, 10vw, 56px); }
+
+  .hero-content { padding: 0 16px 60px; }
+
+  .hero-cta-inner { grid-template-columns: 1fr; }
+
+  .hero-cta-img-wrap { aspect-ratio: 16/9; }
+
+  .features-grid { grid-template-columns: 1fr; }
+
+  .testimonials-header { flex-direction: column; align-items: flex-start; }
+
+  .rating-summary { text-align: left; }
+
+  .rating-stars { justify-content: flex-start; }
+
+  .footer-top { grid-template-columns: 1fr; }
+
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
+
+  .sticky-cta { display: block; }
+
+  body { padding-bottom: 72px; }
+
+  .cta-section { padding-bottom: 100px; }
+
+  .step-img { aspect-ratio: 16/9; }
+
+  .feature-img { aspect-ratio: 16/9; }
+
+  .step-body { padding: var(--sp-4); }
+
+  .feature-body { padding: var(--sp-4); }
+}
+
+/* ============================================================
+   MOBILE NAV (open state)
+   ============================================================ */
+.nav.open .nav-links {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 100%; left: 0; right: 0;
+  background: var(--ink-soft);
+  padding: var(--sp-4);
+  border-bottom: 0.5px solid rgba(255,255,255,.08);
+}
+
+@media(max-width:600px){
+  .hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .hero-stats > div:nth-child(3){display:none}
+}
+
+/* ============================================================
+   BRAND / ABOUT SECTION
+   ============================================================ */
+.story{
+  background:#FFFFFF;
+  padding:var(--sp-8) 0;
+  position:relative;overflow:hidden;
+}
+.story::before{ content:''; }
+.story-inner{ display:block; }
+.story-sidebar{ display:none; }
+.story-body{position:relative;z-index:1}
+.story-lead{
+  font-family:var(--font-display);
+  font-size:clamp(20px,3vw,28px);
+  color:var(--ink);line-height:1.35;
+  margin-bottom:var(--sp-3);
+  letter-spacing:-.01em;
+  text-align:left;
+}
+.story-lead em{color:var(--gray-500)}
+.story-p{
+  font-size:15px;color:var(--gray-800);line-height:1.85;
+  margin-bottom:var(--sp-3);
+  text-align:left;
+}
+.story-highlight{
+  border-left:2px solid var(--ink);
+  padding:var(--sp-2) var(--sp-3);
+  margin:var(--sp-3) 0;
+}
+.story-highlight p{
+  font-family:var(--font-display);
+  font-size:16px;color:var(--ink);line-height:1.55;
+  text-align:left;
+}
+.mission{
+  padding:var(--sp-8) 0;
+  background:#FFFFFF;
+}
+.mission-header{
+  display:block;
+  margin-bottom:var(--sp-5);
+}
+.mission-intro{
+  font-size:15px;color:var(--gray-500);line-height:1.85;
+  max-width:680px;
+  text-align:left;
+  margin-top:var(--sp-2);
+}
+.values-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  background:rgba(0,0,0,.06);
+  border:0.5px solid rgba(0,0,0,.06);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+}
+.value-card{
+  background:var(--off-white);
+  padding:var(--sp-4);
+  position:relative;
+  transition:background .25s;
+}
+.value-card:hover{background:var(--gray-100)}
+.value-card::after{
+  content:'';position:absolute;
+  bottom:0;left:0;right:0;height:2px;
+  background:var(--ink);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .35s ease;
+}
+.value-card:hover::after{transform:scaleX(1)}
+.value-num{
+  font-family:var(--font-display);
+  font-size:32px;color:rgba(0,0,0,.1);
+  line-height:1;margin-bottom:var(--sp-2);
+  text-align:left;
+}
+.value-icon{
+  width:30px;height:30px;
+  border:1px solid rgba(0,0,0,.18);
+  border-radius:var(--radius);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:var(--sp-2);
+}
+.value-title{
+  font-size:14px;font-weight:500;color:var(--ink);
+  margin-bottom:var(--sp-1);line-height:1.3;
+  text-align:left;
+}
+.value-desc{
+  font-size:12px;color:var(--gray-500);line-height:1.7;
+  text-align:left;
+}
+.mission-statement{
+  margin-top:var(--sp-5);
+  text-align:left;
+  padding:var(--sp-4);
+  border:0.5px solid rgba(0,0,0,.12);
+  border-radius:var(--radius-lg);
+  background:var(--off-white);
+  position:relative;overflow:hidden;
+}
+.mission-statement::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:1px;
+  background:var(--ink);opacity:.12;
+}
+.mission-statement .eyebrow{margin-bottom:var(--sp-2)}
+.mission-text{
+  font-family:var(--font-display);
+  font-size:clamp(16px,2.5vw,24px);
+  color:var(--ink);line-height:1.35;
+  letter-spacing:-.02em;
+  text-align:left;
+}
+.mission-text em{color:var(--gray-500)}
+.difference{
+  padding:var(--sp-8) 0;
+  background:#FFFFFF;
+}
+.diff-header{margin-bottom:var(--sp-4)}
+.diff-list{ display:flex;flex-direction:column;gap:0; }
+.diff-item{
+  display:grid;
+  grid-template-columns:56px 1fr 1fr;
+  gap:var(--sp-4);
+  align-items:start;
+  padding:var(--sp-3) 0;
+  border-bottom:0.5px solid rgba(0,0,0,.06);
+  text-align:left;
+}
+.diff-item:last-child{border-bottom:none}
+.diff-counter{
+  font-family:var(--font-display);font-size:11px;
+  color:var(--gray-500);letter-spacing:.08em;
+  padding-top:4px;
+  text-align:left;
+}
+.diff-left h3{
+  font-family:var(--font-display);
+  font-size:clamp(15px,2vw,20px);
+  color:var(--ink);line-height:1.25;
+  margin-bottom:var(--sp-1);
+  text-align:left;
+}
+.diff-left h3 em{color:var(--gray-500)}
+.diff-right{
+  font-size:13px;color:var(--gray-500);
+  line-height:1.8;padding-top:4px;
+  text-align:left;
+}
+.diff-tag{
+  display:inline-block;margin-top:var(--sp-1);
+  font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--gray-800);
+  border-bottom:1px solid rgba(0,0,0,.18);
+  padding-bottom:2px;
+}
+.trust-section{
+  padding:var(--sp-8) 0;
+  background:#FFFFFF;
+}
+.trust-header{
+  display:block;
+  margin-bottom:var(--sp-5);
+}
+.trust-header-right{
+  font-size:15px;color:var(--gray-800);line-height:1.85;
+  margin-top:var(--sp-2);max-width:600px;
+  text-align:left;
+}
+
+.numbers-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1px;
+  background:var(--gray-100);
+  border:0.5px solid var(--gray-100);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  margin-bottom:var(--sp-4);
+}
+.number-cell{
+  background:#FFFFFF;
+  padding:var(--sp-3) var(--sp-3);
+  text-align:left;
+}
+.number-big{
+  font-family:var(--font-display);
+  font-size:clamp(26px,3.5vw,38px);
+  color:var(--ink);line-height:1;
+  letter-spacing:-.03em;
+  margin-bottom:4px;
+}
+.number-big span{font-size:.55em;color:var(--gray-500)}
+.number-label{font-size:12px;color:var(--gray-500);letter-spacing:.03em;text-align:left}
+.trust-quote-wrap{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:var(--sp-3);
+}
+.trust-quote{
+  background:var(--off-white);
+  border-radius:var(--radius-lg);
+  padding:var(--sp-4);
+  position:relative;
+}
+.tq-mark{
+  font-family:var(--font-display);
+  font-size:32px;line-height:.9;
+  color:var(--gray-300);
+  margin-bottom:var(--sp-1);
+}
+.tq-text{
+  font-size:14px;color:var(--gray-800);line-height:1.75;
+  margin-bottom:var(--sp-3);
+  text-align:left;
+}
+.tq-text strong{color:var(--ink)}
+.tq-author{
+  display:flex;align-items:center;gap:10px;
+  padding-top:var(--sp-2);
+  border-top:0.5px solid rgba(0,0,0,.08);
+}
+.tq-avatar{
+  width:30px;height:30px;border-radius:50%;
+  background:var(--gray-100);
+  border:1px solid rgba(0,0,0,.18);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);
+  font-size:12px;color:var(--gray-800);flex-shrink:0;
+}
+.tq-name{font-size:13px;font-weight:500;color:var(--ink)}
+.tq-meta{font-size:11px;color:var(--gray-500)}
+
+/* ============================================================
+   CLOSING CTA
+   ============================================================ */
+.closing{
+  padding:var(--sp-16) 0;
+  background:#FFFFFF;
+  text-align:center;
+  position:relative;overflow:hidden;
+}
+.closing::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:1px;
+  background:linear-gradient(to right,transparent,var(--gold),transparent);
+  opacity:.3;
+}
+
+/* large watermark */
+.closing::after{
+  content:'TARARIN';
+  position:absolute;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:var(--font-display);font-size:140px;
+  color:rgba(255,255,255,.02);white-space:nowrap;
+  pointer-events:none;user-select:none;letter-spacing:.05em;
+}
+
+.closing-inner{position:relative;z-index:1}
+.closing .eyebrow{margin-bottom:var(--sp-3)}
+.closing .display{margin-bottom:var(--sp-4)}
+.closing-body{
+  font-size:16px;color:var(--gray-500);
+  max-width:520px;margin:0 auto var(--sp-8);
+  line-height:1.85;
+}
+
+.cta-group{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
+
+.btn-primary{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 32px;border-radius:var(--radius);
+  background:var(--gold);color:var(--ink);
+  font-size:14px;font-weight:500;letter-spacing:.05em;
+  border:none;cursor:pointer;
+  transition:background .2s,transform .15s;
+}
+.btn-primary:hover{background:var(--gold-light);transform:translateY(-1px)}
+
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:13px 28px;border-radius:var(--radius);
+  background:transparent;color:var(--ink);
+  font-size:13px;letter-spacing:.04em;
+  border:1px solid rgba(255,255,255,.18);cursor:pointer;
+  transition:border-color .2s,background .2s;
+}
+.btn-ghost:hover{border-color:rgba(255,255,255,.45);background:rgba(0,0,0,.03)}
+
+.closing-guarantee{
+  margin-top:var(--sp-5);
+  font-size:13px;color:var(--gray-600);
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer{
+  padding:var(--sp-6) 0 var(--sp-3);
+  border-top:0.5px solid rgba(0,0,0,.06);
+}
+.footer-bottom{
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:11px;color:var(--gray-800);flex-wrap:wrap;gap:8px;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr}
+  .hero-quote{display:none}
+  .story-inner{grid-template-columns:1fr}
+  .story-sidebar{flex-direction:row;flex-wrap:wrap;align-items:center}
+  .story-vertical-tag{writing-mode:initial;transform:none}
+  .mission-header{grid-template-columns:1fr}
+  .values-grid{grid-template-columns:1fr}
+  .diff-item{grid-template-columns:56px 1fr;gap:var(--sp-3)}
+  .diff-right{grid-column:2;font-size:13px;color:var(--gray-500);line-height:1.8;margin-top:var(--sp-2)}
+  .trust-header{grid-template-columns:1fr}
+  .numbers-grid{grid-template-columns:repeat(2,1fr)}
+  .trust-quote-wrap{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .container,.container-narrow,.container-wide{padding:0 var(--sp-4)}
+  .nav-links{display:none}
+  .diff-item{grid-template-columns:1fr;gap:var(--sp-2)}
+  .diff-counter{display:none}
+  .diff-right{grid-column:1;margin-top:var(--sp-1)}
+  .numbers-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+/* ============================================================
+   FAQ / PRIVACY / TERMS
+   ============================================================ */
+.faq-row {
+  border-bottom: 0.5px solid var(--gray-100);
+}
+
+.faq-row summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-4) 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+  cursor: pointer;
+  list-style: none;
+  gap: var(--sp-3);
+}
+
+.faq-row summary::-webkit-details-marker { display: none; }
+
+.faq-row summary::after {
+  content: '+';
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--gray-500);
+  flex-shrink: 0;
+  transition: transform .3s ease;
+}
+
+.faq-row[open] summary::after {
+  transform: rotate(45deg);
+  color: var(--ink);
+}
+
+.faq-row p {
+  font-size: 14px;
+  color: var(--gray-800);
+  line-height: 1.85;
+  padding-bottom: var(--sp-4);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ============================================================
+     NAVIGATION
+     ============================================================ -->
+<nav class="nav" id="nav">
+  <a href="#" class="nav-logo">
+    <img src="img/logo.png" alt="TARARIN SKINCARE FOR MEN">
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#features">特徴</a></li>
+    <li><a href="#routine">使い方</a></li>
+    <li><a href="#reviews">口コミ</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#cta" class="nav-cta">お試しセット</a></li>
+  </ul>
+
+  <div class="nav-toggle" id="navToggle" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+
+<!-- ============================================================
+     HERO SECTION
+     ============================================================ -->
+<section class="hero" id="hero">
+
+  <!-- ── フルスクリーンスライダー背景 ── -->
+  <div class="hero-slider">
+    <div class="hero-slide active" style="background-image:url('img/hero-01.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('img/hero-02.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('img/hero-03.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('img/hero-04.jpg')"></div>
+  </div>
+
+  <!-- ── オーバーレイ ── -->
+  <div class="hero-overlay"></div>
+
+  <!-- ── コンテンツ ── -->
+  <div class="hero-content">
+    <div class="hero-eyebrow fade-up">
+      <div class="hero-eyebrow-line"></div>
+      <span class="eyebrow">Men's Skin Care — 2025</span>
+    </div>
+
+    <h1 class="hero-title fade-up delay-1">
+      清潔感は、<br>
+      <em>才能じゃない。</em>
+    </h1>
+
+    <p class="hero-sub fade-up delay-2">
+      余計なものを全て省いた、本質だけのスキンケア。<br>
+      朝3分、3つのステップ。それだけで肌は変わる。
+    </p>
+
+    <!-- スライドインジケーター -->
+    <div class="hero-indicators fade-up delay-3">
+      <button class="hero-dot active" onclick="goSlide(0)" aria-label="洗顔フォーム"></button>
+      <button class="hero-dot" onclick="goSlide(1)" aria-label="化粧水"></button>
+      <button class="hero-dot" onclick="goSlide(2)" aria-label="保湿クリーム"></button>
+      <button class="hero-dot" onclick="goSlide(3)" aria-label="シェービングフォーム"></button>
+    </div>
+
+    <!-- 製品ラベル -->
+    <div class="hero-product-labels fade-up delay-3">
+      <span class="hero-product-label active" data-slide="0">Face Wash</span>
+      <span class="hero-product-label" data-slide="1">Toner</span>
+      <span class="hero-product-label" data-slide="2">Moisturizing Cream</span>
+      <span class="hero-product-label" data-slide="3">Shaving Foam</span>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>SCROLL</span>
+  </div>
+
+</section>
+
+<!-- ============================================================
+     HERO CTA SECTION（ヒーロー直下）
+     ============================================================ -->
+<section class="hero-cta-section">
+  <div class="container">
+    <div class="hero-cta-inner">
+
+      <!-- 左：商品画像 -->
+      <div class="hero-cta-visual">
+        <div class="hero-cta-img-wrap">
+          <img
+            src="img/product-main.jpg"
+            alt="TARARIN メンズスキンケア 3点セット"
+            loading="eager"
+          >
+          <div class="hero-cta-badge">
+            <span class="hero-cta-badge-num">No.1</span>
+            <span class="hero-cta-badge-label">20代男性支持率</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右：CTA & stats -->
+      <div class="hero-cta-body">
+
+        <p class="eyebrow" style="margin-bottom:12px">TARARIN — お試しセット</p>
+        <h2 class="hero-cta-title">
+          まず、試してみて。<br>
+          <em>リスクはゼロ。</em>
+        </h2>
+        <p class="hero-cta-sub">
+          初回50%OFF・30日間全額返金保証。<br>
+          気に入らなければ、理由を聞かずに全額お返しします。
+        </p>
+
+        <div class="hero-cta-actions">
+          <a href="#cta" class="btn-primary">
+            お試しセットを試す
+            <svg width="16" height="16" fill="none" viewBox="0 0 16 16">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a href="#routine" class="hero-cta-link">3ステップを見る</a>
+        </div>
+
+        <div class="hero-cta-stats">
+          <div class="hero-cta-stat">
+            <div class="hcs-num">10<span>万+</span></div>
+            <div class="hcs-label">累計販売本数</div>
+            <div class="hcs-note">※2025年4月時点</div>
+          </div>
+          <div class="hcs-divider"></div>
+          <div class="hero-cta-stat">
+            <div class="hcs-num">94<span>%</span></div>
+            <div class="hcs-label">顧客満足度</div>
+            <div class="hcs-note">※継続者調査 N=1,200</div>
+          </div>
+          <div class="hcs-divider"></div>
+          <div class="hero-cta-stat">
+            <div class="hcs-num">4.8<span>★</span></div>
+            <div class="hcs-label">平均レビュー</div>
+            <div class="hcs-note">※公式 2,847件</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     TRUST BAR
+     ============================================================ -->
+<!-- ============================================================
+     BRAND / ABOUT SECTION
+     ============================================================ -->
+<section id="about" style="scroll-margin-top:80px">
+
+<!-- ─── Brand Story ─── -->
+<section class="story">
+  <div class="container">
+    <div class="story-inner">
+
+      <div class="story-body">
+        <p class="eyebrow" style="margin-bottom:16px">Our story</p>
+        <h2 class="story-lead reveal">
+          きっかけは、友人の<br>
+          一言だった。<em>「最近、肌きれいじゃん」</em>。
+        </h2>
+
+        <p class="story-p reveal delay-1">
+          創業者のたらりんは、20代のころ肌荒れに悩んでいた。テカり、ニキビ、毛穴。でも周りの男友達はほとんど気にしていなかった。「男がスキンケアするなんて」という空気が、まだ当たり前だったから。
+        </p>
+
+        <p class="story-p reveal delay-2">
+          ある日、たまたま使い始めたシンプルな洗顔料。3週間後、友人から「なんか最近雰囲気変わった？」と言われた。その一言が、全ての始まりだった。
+        </p>
+
+        <div class="story-highlight reveal delay-2">
+          <p>「肌が変わるだけで、こんなに自信が出るのか。なんでもっと早く始めなかったんだろう」と思った。</p>
+        </div>
+
+        <p class="story-p reveal delay-3">
+          その後、たらりんは市場のメンズスキンケアを片っ端から試した。でも、ほとんどが「とりあえず男性向けにしました」感が強く、成分はごまかされ、使い方は複雑で、続けられるものがなかった。
+        </p>
+
+        <p class="story-p reveal delay-3">
+          だから、自分たちで作ることにした。余計な添加物ゼロ。主成分はアロエベラと漢方エキスのみ。ステップは3つだけ。「これがあれば他はいらない」と思える、本質だけのスキンケアを。それがTARARINの始まりだ。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ─── Mission & Values ─── -->
+<section class="mission">
+  <div class="container">
+
+    <div class="mission-header">
+      <div class="reveal">
+        <p class="eyebrow" style="margin-bottom:16px">Mission & Values</p>
+        <h2 class="display">
+          俺たちが<br>
+          大切にしている<em>こと。</em>
+        </h2>
+      </div>
+      <div class="mission-intro reveal delay-1">
+        カッコいいパッケージも、有名人の広告も、それ自体は悪くない。でも、俺たちが一番こだわりたいのは「使い続けた先に何が変わるか」だ。肌だけじゃなく、自信も、印象も、人生もちょっとだけ変わる。そう信じてプロダクトを作っている。
+      </div>
+    </div>
+
+    <div class="values-grid">
+
+      <div class="value-card reveal">
+        <div class="value-num">01</div>
+        <div class="value-icon">
+          <svg width="18" height="18" fill="none" viewBox="0 0 18 18">
+            <path d="M9 2l1.5 3.5 3.5.5-2.5 2.5.5 3.5L9 10.5 6 12l.5-3.5L4 6l3.5-.5z" stroke="#333333" stroke-width="1.2" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3 class="value-title">本質だけを、届ける。</h3>
+        <p class="value-desc">
+          防腐剤・香料・着色料は使わない。広告費より研究費にお金をかける。肌に入るものだけを、とことん考え抜く。余計なものを削ぎ落とすほど、本質が際立つ。
+        </p>
+      </div>
+
+      <div class="value-card reveal delay-1">
+        <div class="value-num">02</div>
+        <div class="value-icon">
+          <svg width="18" height="18" fill="none" viewBox="0 0 18 18">
+            <circle cx="9" cy="9" r="7" stroke="#333333" stroke-width="1.2"/>
+            <path d="M6 9l2 2 4-4" stroke="#333333" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3 class="value-title">続けられる、シンプルさ。</h3>
+        <p class="value-desc">
+          10ステップのルーティンは美しいかもしれない。でも続かなければ意味がない。3分で完結するシステムにこだわるのは、「続けること」が最大の美容だと知っているから。
+        </p>
+      </div>
+
+      <div class="value-card reveal delay-2">
+        <div class="value-num">03</div>
+        <div class="value-icon">
+          <svg width="18" height="18" fill="none" viewBox="0 0 18 18">
+            <path d="M9 3c-3.3 0-6 2.7-6 6s2.7 6 6 6 6-2.7 6-6" stroke="#333333" stroke-width="1.2" stroke-linecap="round"/>
+            <path d="M13 3v4h-4" stroke="#333333" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3 class="value-title">正直に、透明に。</h3>
+        <p class="value-desc">
+          「なんとなく良さそう」な成分名を並べない。効果の根拠を数字で見せる。気に入らなければ返金する。お客さんを信頼しているから、正直でいられる。
+        </p>
+      </div>
+
+    </div>
+
+    <div class="mission-statement reveal" style="margin-top:var(--sp-8)">
+      <p class="eyebrow">Our mission</p>
+      <p class="mission-text" style="margin-top:16px">
+        「男性がスキンケアをすること」を、<em>当たり前の選択</em>にする。
+      </p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ─── Why different ─── -->
+<section class="difference">
+  <div class="container">
+
+    <div class="diff-header reveal">
+      <p class="eyebrow" style="margin-bottom:16px">Why us</p>
+      <h2 class="display">
+        他のブランドと、<br>
+        <em>ここが違う。</em>
+      </h2>
+    </div>
+
+    <div class="diff-list">
+
+      <div class="diff-item reveal">
+        <div class="diff-counter">01 —</div>
+        <div class="diff-left">
+          <h3>アロエ＋漢方が最適解。</h3>
+          <p style="font-size:14px;color:var(--gray-500);margin-top:8px;line-height:1.75">主成分はアロエベラと厳選漢方エキス。自然が答えを持っていた。</p>
+          <span class="diff-tag">Aloe + Herbal Formula</span>
+        </div>
+        <div class="diff-right">
+          アロエベラは数千年の歴史を持つ天然の保湿・鎮静成分だ。漢方エキスは肌のバリア機能を根本から整える。この2つを高濃度で組み合わせたのがTARARINの処方の核心。「なんとなく自然派」ではなく、男性の肌構造に合わせて成分を選び抜いた結果がこの組み合わせだ。
+        </div>
+      </div>
+
+      <div class="diff-item reveal">
+        <div class="diff-counter">02 —</div>
+        <div class="diff-left">
+          <h3>男性の肌専用に、設計した。</h3>
+          <p style="font-size:14px;color:var(--gray-500);margin-top:8px;line-height:1.75">パッケージを黒くしただけの商品とは、根本から違う。</p>
+          <span class="diff-tag">Formulated for men</span>
+        </div>
+        <div class="diff-right">
+          男性の皮脂分泌量は女性の約2倍。毛穴のサイズも、ひげ剃りによる肌ダメージも、全部違う。なのに市場の「メンズ」商品の多くは、女性向けを黒いパッケージに入れ替えただけだ。TARARINは男性の肌構造に合わせて処方を一から設計した。だから効く。
+        </div>
+      </div>
+
+      <div class="diff-item reveal">
+        <div class="diff-counter">03 —</div>
+        <div class="diff-left">
+          <h3>3分で終わる。だから続く。</h3>
+          <p style="font-size:14px;color:var(--gray-500);margin-top:8px;line-height:1.75">覚えることは3つだけ。洗顔・化粧水・保湿。それだけ。</p>
+          <span class="diff-tag">Habit-first design</span>
+        </div>
+        <div class="diff-right">
+          どんなに優れた商品でも、続かなければ意味がない。「続けられるか」を最初の設計基準にした。ステップを増やすほど脱落率は上がる。だから削れるものは全て削った。忙しい朝でも、眠い夜でも、3分あれば終わる。歯磨きと同じ感覚になったとき、はじめて肌は変わり始める。
+        </div>
+      </div>
+
+      <div class="diff-item reveal">
+        <div class="diff-counter">04 —</div>
+        <div class="diff-left">
+          <h3>返金保証は、自信の表れだ。</h3>
+          <p style="font-size:14px;color:var(--gray-500);margin-top:8px;line-height:1.75">30日間、気に入らなければ理由を問わず全額返金。</p>
+          <span class="diff-tag">No-risk guarantee</span>
+        </div>
+        <div class="diff-right">
+          「本当に効くの？」と思うのは当然だ。だから、リスクをゼロにした。試して合わなければ全額返す。それだけの自信が商品にある。返金保証をつけることは、俺たちにとってリスクではなく、誠実さの表明だ。「まず試してみて」と言えるブランドでありたい。
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ─── Numbers & Trust ─── -->
+<section class="trust-section">
+  <div class="container">
+
+    <div class="trust-header">
+      <div class="reveal">
+        <p class="eyebrow" style="margin-bottom:16px">Numbers don't lie</p>
+        <h2 class="display">
+          数字が、<em>正直に語る。</em>
+        </h2>
+      </div>
+      <div class="trust-header-right reveal delay-1">
+        俺たちは「なんとなく良さそう」という言葉より、実際の数字を大切にする。お客さんが感じた変化、継続した時間、正直な評価が全てだ。
+      </div>
+    </div>
+
+    <div class="numbers-grid">
+      <div class="number-cell reveal">
+        <div class="number-big">10<span>万+</span></div>
+        <div class="number-label">累計販売本数</div>
+        <div style="font-size:10px;color:var(--gray-500);margin-top:4px">※2025年4月時点</div>
+      </div>
+      <div class="number-cell reveal delay-1">
+        <div class="number-big">94<span>%</span></div>
+        <div class="number-label">3ヶ月継続率</div>
+        <div style="font-size:10px;color:var(--gray-500);margin-top:4px">※継続者調査 N=1,200</div>
+      </div>
+      <div class="number-cell reveal delay-2">
+        <div class="number-big">4.8<span>★</span></div>
+        <div class="number-label">平均レビュー評価</div>
+        <div style="font-size:10px;color:var(--gray-500);margin-top:4px">※公式 2,847件</div>
+      </div>
+      <div class="number-cell reveal delay-3">
+        <div class="number-big">1<span>週</span></div>
+        <div class="number-label">実感までの平均期間</div>
+        <div style="font-size:10px;color:var(--gray-500);margin-top:4px">※使用者アンケート</div>
+      </div>
+    </div>
+
+    <div class="trust-quote-wrap">
+
+      <div class="trust-quote reveal">
+        <div class="tq-mark">"</div>
+        <p class="tq-text">
+          スキンケアって女のもんだと思ってたけど、これは違った。<strong>使い始めて2週間、就活の面接で「清潔感がある」って言われた。</strong>それだけで元が取れた気がする。
+        </p>
+        <div class="tq-author">
+          <div class="tq-avatar">Y</div>
+          <div>
+            <div class="tq-name">Y. Yamamoto</div>
+            <div class="tq-meta">23歳・就活生 / 使用歴5ヶ月</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="trust-quote reveal delay-1">
+        <div class="tq-mark">"</div>
+        <p class="tq-text">
+          返金保証があったから、半信半疑で試した。<strong>1週間後に彼女から「肌きれいになった？」と言われて驚いた。</strong>今は解約する気なんて全くない。
+        </p>
+        <div class="tq-author">
+          <div class="tq-avatar">K</div>
+          <div>
+            <div class="tq-name">K. Tanaka</div>
+            <div class="tq-meta">24歳・会社員 / 使用歴3ヶ月</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+</section><!-- /brand-about section -->
+
+<!-- ============================================================
+     FEATURES SECTION
+     ============================================================ -->
+<section class="features" id="features">
+  <div class="container">
+
+    <div class="features-header">
+      <div>
+        <p class="eyebrow" style="margin-bottom: 12px;">Why it works</p>
+        <h2 class="section-title" style="color: var(--ink);">
+          なぜ、これだけで<br><em>いいのか。</em>
+        </h2>
+      </div>
+      <div class="features-header-right">
+        スキンケアは複雑である必要はない。肌に本当に必要なものだけを、最高の濃度で届ける。
+        余計な成分を全て省いたから、肌への負担もゼロに近い。
+      </div>
+    </div>
+
+    <div class="features-grid">
+
+      <!-- Feature 1 -->
+      <div class="feature-card">
+        <div class="feature-img">
+          <img
+            src="img/feature-01.jpg"
+            alt="TARARIN 成分の無駄ゼロ 自然由来成分"
+            loading="lazy"
+          >
+          <div class="feature-img-overlay"></div>
+        </div>
+        <div class="feature-body">
+          <div class="feature-number">01</div>
+          <div class="feature-icon-wrap">
+            <svg width="18" height="18" fill="none" viewBox="0 0 18 18">
+              <circle cx="9" cy="9" r="7" stroke="#333333" stroke-width="1.2"/>
+              <path d="M6 9l2 2 4-4" stroke="#333333" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">成分の無駄、ゼロ。</h3>
+          <p class="feature-desc">アロエベラ＋漢方エキスを主成分に、防腐剤・香料・着色料は一切不使用。自然の力を高濃度で凝縮している。</p>
+          <span class="feature-tag">無添加処方</span>
+        </div>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="feature-card">
+        <div class="feature-img">
+          <img
+            src="img/feature-02.jpg"
+            alt="TARARIN 朝3分で完結するスキンケア"
+            loading="lazy"
+          >
+          <div class="feature-img-overlay"></div>
+        </div>
+        <div class="feature-body">
+          <div class="feature-number">02</div>
+          <div class="feature-icon-wrap">
+            <svg width="18" height="18" fill="none" viewBox="0 0 18 18">
+              <path d="M9 2v4M9 12v4M2 9h4M12 9h4" stroke="#333333" stroke-width="1.2" stroke-linecap="round"/>
+              <circle cx="9" cy="9" r="3" stroke="#333333" stroke-width="1.2"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">朝3分で完結する。</h3>
+          <p class="feature-desc">洗顔・化粧水・保湿の3ステップ。複雑なルーティンは続かない。だからシンプルに設計した。</p>
+          <span class="feature-tag">3ステップ完結</span>
+        </div>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="feature-card">
+        <div class="feature-img">
+          <img
+            src="img/feature-03.jpg"
+            alt="TARARIN 1週間で周りが気づく清潔感"
+            loading="lazy"
+          >
+          <div class="feature-img-overlay"></div>
+        </div>
+        <div class="feature-body">
+          <div class="feature-number">03</div>
+          <div class="feature-icon-wrap">
+            <svg width="18" height="18" fill="none" viewBox="0 0 18 18">
+              <path d="M4 14c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="#333333" stroke-width="1.2" stroke-linecap="round"/>
+              <circle cx="9" cy="6" r="3" stroke="#333333" stroke-width="1.2"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">1週間で周りが気づく。</h3>
+          <p class="feature-desc">テカリが消え、毛穴が目立たなくなる。「最近なんか変わった？」と言われる、その変化がある。</p>
+          <span class="feature-tag">実感速度が速い</span>
+        </div>
+      </div>
+
+    <p style="font-size:10px;color:var(--gray-500);margin-top:8px;letter-spacing:.02em">※2024年調査（定期購入者N=1,200）。継続率は3ヶ月後アンケート集計値。</p></div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     STEPS SECTION
+     ============================================================ -->
+<section class="steps" id="routine">
+  <div class="container">
+
+    <div class="steps-header">
+      <p class="eyebrow">Daily routine</p>
+      <h2 class="section-title">3分で、<em>終わり。</em></h2>
+      <p>それ以上でも、それ以下でもない。</p>
+    </div>
+
+    <div class="steps-grid">
+
+      <div class="step-card">
+        <div class="step-img">
+          <img
+            src="img/step-01.jpg"
+            alt="TARARIN STEP1 洗顔"
+            loading="lazy"
+          >
+        </div>
+        <div class="step-body">
+          <div class="step-num">01</div>
+          <div class="step-label">Morning / Night</div>
+          <h3 class="step-title">洗顔。</h3>
+          <p class="step-desc">
+            余計な皮脂と汚れだけをやさしく除去。必要なうるおいは残す、絶妙な洗浄力。泡立て30秒、洗い流し30秒。
+          </p>
+          <div class="step-time">
+            <span class="step-time-dot"></span>
+            <span>所要時間：約1分</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-img">
+          <img
+            src="img/step-02.jpg"
+            alt="TARARIN STEP2 化粧水"
+            loading="lazy"
+          >
+        </div>
+        <div class="step-body">
+          <div class="step-num">02</div>
+          <div class="step-label">After washing</div>
+          <h3 class="step-title">化粧水。</h3>
+          <p class="step-desc">
+            拭き取り不要の浸透型。ベタつかないのに、角層の奥までうるおいが届く。手のひらでやさしく押さえるだけ。
+          </p>
+          <div class="step-time">
+            <span class="step-time-dot"></span>
+            <span>所要時間：約30秒</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-img">
+          <img
+            src="img/step-03.jpg"
+            alt="TARARIN STEP3 保湿クリーム"
+            loading="lazy"
+          >
+        </div>
+        <div class="step-body">
+          <div class="step-num">03</div>
+          <div class="step-label">Final step</div>
+          <h3 class="step-title">保湿クリーム。</h3>
+          <p class="step-desc">
+            一日中うるおいをキープするバリア機能。外出前の仕上げに最適。薄く伸ばすだけで、肌を守る膜が完成。
+          </p>
+          <div class="step-time">
+            <span class="step-time-dot"></span>
+            <span>所要時間：約30秒</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+<div class="trust-bar">
+  <div class="container">
+    <div class="trust-bar-inner">
+
+      <div class="trust-item">
+        <svg class="trust-icon" fill="none" viewBox="0 0 16 16">
+          <path d="M8 1l1.6 3.3L13 5l-2.5 2.4.6 3.6L8 9.3 4.9 11l.6-3.6L3 5l3.4-.7z" stroke="#333333" stroke-width="1.2" stroke-linejoin="round"/>
+        </svg>
+        アロエ＋漢方処方
+      </div>
+
+      <div class="trust-divider"></div>
+
+      <div class="trust-item">
+        <svg class="trust-icon" fill="none" viewBox="0 0 16 16">
+          <circle cx="8" cy="8" r="6" stroke="#333333" stroke-width="1.2"/>
+          <path d="M5.5 8l2 2 3-3" stroke="#333333" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        皮膚科医推薦
+      </div>
+
+      <div class="trust-divider"></div>
+
+      <div class="trust-item">
+        <svg class="trust-icon" fill="none" viewBox="0 0 16 16">
+          <rect x="2" y="3" width="12" height="10" rx="2" stroke="#333333" stroke-width="1.2"/>
+          <path d="M5 7l2 2 4-4" stroke="#333333" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        30日間返金保証
+      </div>
+
+      <div class="trust-divider"></div>
+
+      <div class="trust-item">
+        <svg class="trust-icon" fill="none" viewBox="0 0 16 16">
+          <path d="M3 8l2-4h6l2 4v4H3V8z" stroke="#333333" stroke-width="1.2" stroke-linejoin="round"/>
+          <path d="M6 12V9h4v3" stroke="#333333" stroke-width="1.2"/>
+        </svg>
+        送料無料
+      </div>
+
+      <div class="trust-divider"></div>
+
+      <div class="trust-item">
+        <svg class="trust-icon" fill="none" viewBox="0 0 16 16">
+          <path d="M8 2C5 2 2 5 2 8s3 6 6 6 6-3 6-6-3-6-6-6z" stroke="#333333" stroke-width="1.2"/>
+          <path d="M8 5v4l2.5 1.5" stroke="#333333" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        いつでも解約OK
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     TESTIMONIALS SECTION
+     ============================================================ -->
+<section class="testimonials" id="reviews">
+  <div class="container">
+
+    <div class="testimonials-header">
+      <div>
+        <p class="eyebrow" style="margin-bottom: 12px;">Real reviews</p>
+        <h2 class="section-title">使った人が、<br><em>語る。</em></h2>
+      </div>
+      <div class="rating-summary">
+        <div class="rating-num">4.8</div>
+        <div class="rating-stars">
+          <svg class="star" viewBox="0 0 14 14"><path d="M7 1l1.5 3 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.4.6-3.5L2 4.5l3.5-.5z" fill="#333333"/></svg>
+          <svg class="star" viewBox="0 0 14 14"><path d="M7 1l1.5 3 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.4.6-3.5L2 4.5l3.5-.5z" fill="#333333"/></svg>
+          <svg class="star" viewBox="0 0 14 14"><path d="M7 1l1.5 3 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.4.6-3.5L2 4.5l3.5-.5z" fill="#333333"/></svg>
+          <svg class="star" viewBox="0 0 14 14"><path d="M7 1l1.5 3 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.4.6-3.5L2 4.5l3.5-.5z" fill="#333333"/></svg>
+          <svg class="star" viewBox="0 0 14 14"><path d="M7 1l1.5 3 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.4.6-3.5L2 4.5l3.5-.5z" fill="#333333"/></svg>
+        </div>
+        <div class="rating-count">2,847件のレビュー</div>
+      </div>
+    </div>
+
+    <div class="testimonials-grid">
+
+      <!-- Review 1 -->
+      <div class="testimonial-card">
+        <div class="testimonial-stars">
+          <svg class="star" viewBox="0 0 14 14"><path d="M7 1l1.5 3 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.4.6-3.5L2 4.5l3.5-.5z" fill="#333333"/></svg>
+          <svg class="star" viewBox="0 0 14 14"><path d="M7 1l1.5 3 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.4.6-3.5L2 4.5l3.5-.5z" fill="#333333"/></svg>
+          <svg class="star" viewBox="0 0 14 14"><path d="M7 1l1.5 3 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.4.6-3.5L2 4.5l3.5-.5z" fill="#333333"/></svg>
+          <svg class="star" viewBox="0 0 14 14"><path d="M7 1l1.5 3 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.4.6-3.5L2 4.5l3.5-.5z" fill="#333333"/></svg>
+          <svg class="star" viewBox="0 0 14 14"><path d="M7 1l1.5 3 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.4.6-3.5L2 4.5l3.5-.5z" fill="#333333"/></svg>
+        </div>
+        <p class="testimonial-text">
+          最初は半信半疑だったけど、<strong>1週間で彼女に「肌きれいになった？」</strong>って言われた。それだけで十分でした。続けて2ヶ月、テカリがほぼ消えた。
+        </p>
+        <div class="testimonial-author">
+          <div class="author-avatar">K</div>
+          <div>
+            <div class="author-name">K. Tanaka</div>
+            <div class="author-meta">24歳・会社員 / 使用歴3ヶ月</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Review 2 -->
+      <div class="testimonial-card">
+        <div class="testimonial-stars">
+          <svg class="star" viewBox="0 0 14 14"><path d="M7 1l1.5 3 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.4.6-3.5L2 4.5l3.5-.5z" fill="#333333"/></svg>
+          <svg class="star" viewBox="0 0 14 14"><path d="M7 1l1.5 3 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.4.6-3.5L2 4.5l3.5-.5z" fill="#333333"/></svg>
+          <svg class="star" viewBox="0 0 14 14"><path d="M7 1l1.5 3 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.4.6-3.5L2 4.5l3.5-.5z" fill="#333333"/></svg>
+          <svg class="star" viewBox="0 0 14 14"><path d="M7 1l1.5 3 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.4.6-3.5L2 4.5l3.5-.5z" fill="#333333"/></svg>
+          <svg class="star" viewBox="0 0 14 14"><path d="M7 1l1.5 3 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.4.6-3.5L2 4.5l3.5-.5z" fill="#333333"/></svg>
+        </div>
+        <p class="testimonial-text">
+          スキンケアって女性のものだと思ってた。でもこれは違う。<strong>パッケージ見た瞬間に「俺向けだ」と思った。</strong>使い方も簡単だから続けられてる。
+        </p>
+        <div class="testimonial-author">
+          <div class="author-avatar">R</div>
+          <div>
+            <div class="author-name">R. Sato</div>
+            <div class="author-meta">22歳・大学院生 / 使用歴1ヶ月</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Review 3 -->
+      <div class="testimonial-card">
+        <div class="testimonial-stars">
+          <svg class="star" viewBox="0 0 14 14"><path d="M7 1l1.5 3 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.4.6-3.5L2 4.5l3.5-.5z" fill="#333333"/></svg>
+          <svg class="star" viewBox="0 0 14 14"><path d="M7 1l1.5 3 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.4.6-3.5L2 4.5l3.5-.5z" fill="#333333"/></svg>
+          <svg class="star" viewBox="0 0 14 14"><path d="M7 1l1.5 3 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.4.6-3.5L2 4.5l3.5-.5z" fill="#333333"/></svg>
+          <svg class="star" viewBox="0 0 14 14"><path d="M7 1l1.5 3 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.4.6-3.5L2 4.5l3.5-.5z" fill="#333333"/></svg>
+          <svg class="star" viewBox="0 0 14 14"><path d="M7 1l1.5 3 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.4.6-3.5L2 4.5l3.5-.5z" fill="#333333" opacity=".3"/></svg>
+        </div>
+        <p class="testimonial-text">
+          敏感肌で色々試してきたが、<strong>これだけ刺激がなかった商品は初めて。</strong>無添加は伊達じゃない。肌荒れが減って、就活の面接も自信持って臨めた。
+        </p>
+        <div class="testimonial-author">
+          <div class="author-avatar">Y</div>
+          <div>
+            <div class="author-name">Y. Yamamoto</div>
+            <div class="author-meta">23歳・就活生 / 使用歴5ヶ月</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     CTA SECTION
+     ============================================================ -->
+<section class="cta-section" id="cta">
+  <div class="container">
+    <div class="cta-inner">
+
+      <p class="eyebrow">Limited offer</p>
+
+      <h2 class="cta-title">
+        迷ってる時間が、<br>
+        <em>一番もったいない。</em>
+      </h2>
+
+      <p class="cta-sub">
+        気に入らなければ、全額返金。リスクはゼロ。
+      </p>
+
+      <div class="cta-buttons">
+        <a href="#" class="btn-primary btn-large">
+          お試しセットを今すぐ注文する
+          <svg width="16" height="16" fill="none" viewBox="0 0 16 16">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="services.html" style="font-size:13px;color:var(--gray-500);text-decoration:underline;text-underline-offset:3px;cursor:pointer">コース一覧を見る</a>
+      </div>
+
+      <div class="cta-guarantees">
+        <div class="guarantee-item">
+          <svg class="guarantee-check" fill="none" viewBox="0 0 14 14">
+            <circle cx="7" cy="7" r="6" stroke="#333333" stroke-width="1"/>
+            <path d="M4.5 7l2 2 3-3" stroke="#333333" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          30日間全額返金保証
+        </div>
+        <div class="guarantee-item">
+          <svg class="guarantee-check" fill="none" viewBox="0 0 14 14">
+            <circle cx="7" cy="7" r="6" stroke="#333333" stroke-width="1"/>
+            <path d="M4.5 7l2 2 3-3" stroke="#333333" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          送料無料
+        </div>
+        <div class="guarantee-item">
+          <svg class="guarantee-check" fill="none" viewBox="0 0 14 14">
+            <circle cx="7" cy="7" r="6" stroke="#333333" stroke-width="1"/>
+            <path d="M4.5 7l2 2 3-3" stroke="#333333" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          いつでも解約OK
+        </div>
+        <div class="guarantee-item">
+          <svg class="guarantee-check" fill="none" viewBox="0 0 14 14">
+            <circle cx="7" cy="7" r="6" stroke="#333333" stroke-width="1"/>
+            <path d="M4.5 7l2 2 3-3" stroke="#333333" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          SSL暗号化で安全購入
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<!-- ============================================================
+     FAQ / PRIVACY / TERMS
+     ============================================================ -->
+<section id="faq" style="padding:var(--sp-8) 0;background:#FFFFFF;border-top:0.5px solid var(--gray-100)">
+  <div class="container" style="max-width:800px">
+    <p class="eyebrow" style="margin-bottom:var(--sp-3)">FAQ</p>
+    <h2 style="font-family:var(--font-display);font-size:clamp(24px,3.5vw,36px);font-weight:500;color:var(--ink);margin-bottom:var(--sp-5)">よくある質問。</h2>
+
+    <div style="display:flex;flex-direction:column;gap:0;border-top:0.5px solid var(--gray-100)">
+
+      <details class="faq-row">
+        <summary>スキンケアが初めてでも使えますか？</summary>
+        <p>はい。TARARINは「洗顔→化粧水→保湿」の3ステップのみ。説明書を読まなくても迷わず使えるよう設計しています。初心者の方こそ最初の一本としておすすめです。</p>
+      </details>
+
+      <details class="faq-row">
+        <summary>アロエや漢方成分は肌に刺激がありませんか？</summary>
+        <p>TARARINが使用するアロエベラエキスと漢方エキスは、低刺激・肌なじみの良い処方で配合しています。防腐剤・香料・着色料は不使用。敏感肌の方にも安心してお使いいただけます。</p>
+      </details>
+
+      <details class="faq-row">
+        <summary>効果が出るまでどのくらいかかりますか？</summary>
+        <p>個人差はありますが、多くの方が1週間以内にテカりや肌のベタつきの改善を実感しています。毛穴・肌荒れの改善には2〜4週間の継続使用が目安です。</p>
+      </details>
+
+      <details class="faq-row">
+        <summary>定期購入はいつでも解約できますか？</summary>
+        <p>はい、いつでも解約可能です。縛り期間・違約金は一切ありません。マイページまたはメールでご連絡いただければ翌月分から停止します。</p>
+      </details>
+
+      <details class="faq-row">
+        <summary>返金保証はどのような条件ですか？</summary>
+        <p>初回購入から30日以内であれば、理由を問わず全額返金します。返品の送料も当社負担です。まず試してみてください。</p>
+      </details>
+
+      <details class="faq-row">
+        <summary>どこで購入できますか？</summary>
+        <p>現在はTARARIN公式サイトのみでの販売です。公式サイト限定の初回割引や定期購入特典をご活用ください。</p>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<section id="privacy" style="padding:var(--sp-8) 0;background:#FFFFFF;border-top:0.5px solid var(--gray-100)">
+  <div class="container" style="max-width:800px">
+    <p class="eyebrow" style="margin-bottom:var(--sp-3)">Privacy Policy</p>
+    <h2 style="font-family:var(--font-display);font-size:clamp(22px,3vw,32px);font-weight:500;color:var(--ink);margin-bottom:var(--sp-5)">プライバシーポリシー。</h2>
+
+    <div style="display:flex;flex-direction:column;gap:var(--sp-4);font-size:14px;color:var(--gray-800);line-height:1.9">
+      <div>
+        <h3 style="font-size:15px;font-weight:500;color:var(--ink);margin-bottom:var(--sp-2)">1. 個人情報の取得について。</h3>
+        <p>TARARIN（以下「当社」）は、商品の購入・お問い合わせ・メルマガ登録の際に、氏名・メールアドレス・住所・電話番号などの個人情報をご提供いただくことがあります。</p>
+      </div>
+      <div>
+        <h3 style="font-size:15px;font-weight:500;color:var(--ink);margin-bottom:var(--sp-2)">2. 個人情報の利用目的。</h3>
+        <p>取得した個人情報は、商品の発送・お問い合わせへの回答・サービス改善・新商品のご案内にのみ使用します。第三者への提供は、法令に基づく場合を除き行いません。</p>
+      </div>
+      <div>
+        <h3 style="font-size:15px;font-weight:500;color:var(--ink);margin-bottom:var(--sp-2)">3. 個人情報の管理。</h3>
+        <p>個人情報の漏洩・紛失・改ざんを防ぐため、適切なセキュリティ対策を講じます。保管期間はご利用目的の達成に必要な期間とし、不要となった情報は速やかに削除します。</p>
+      </div>
+      <div>
+        <h3 style="font-size:15px;font-weight:500;color:var(--ink);margin-bottom:var(--sp-2)">4. Cookieの使用。</h3>
+        <p>当サイトでは利便性向上のためCookieを使用しています。ブラウザの設定でCookieを無効にすることも可能ですが、一部機能が利用できなくなる場合があります。</p>
+      </div>
+      <div>
+        <h3 style="font-size:15px;font-weight:500;color:var(--ink);margin-bottom:var(--sp-2)">5. お問い合わせ。</h3>
+        <p>個人情報の開示・訂正・削除についてのご要望は、当社サポート窓口までお問い合わせください。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="terms" style="padding:var(--sp-8) 0;background:#FFFFFF;border-top:0.5px solid var(--gray-100)">
+  <div class="container" style="max-width:800px">
+    <p class="eyebrow" style="margin-bottom:var(--sp-3)">Terms of Service</p>
+    <h2 style="font-family:var(--font-display);font-size:clamp(22px,3vw,32px);font-weight:500;color:var(--ink);margin-bottom:var(--sp-5)">利用規約。</h2>
+
+    <div style="display:flex;flex-direction:column;gap:var(--sp-4);font-size:14px;color:var(--gray-800);line-height:1.9">
+      <div>
+        <h3 style="font-size:15px;font-weight:500;color:var(--ink);margin-bottom:var(--sp-2)">1. 適用範囲。</h3>
+        <p>本規約は、TARARIN公式サイト（以下「本サイト」）を利用するすべてのお客様に適用されます。本サイトをご利用いただくことで、本規約に同意したものとみなします。</p>
+      </div>
+      <div>
+        <h3 style="font-size:15px;font-weight:500;color:var(--ink);margin-bottom:var(--sp-2)">2. 商品の購入。</h3>
+        <p>商品の注文完了をもって売買契約が成立します。在庫状況により発送が遅れる場合は、メールにてご連絡します。商品の価格・仕様は予告なく変更することがあります。</p>
+      </div>
+      <div>
+        <h3 style="font-size:15px;font-weight:500;color:var(--ink);margin-bottom:var(--sp-2)">3. 返品・返金。</h3>
+        <p>初回購入から30日以内は全額返金保証の対象です。それ以降の返品は、商品に明らかな欠陥がある場合のみ対応します。お客様都合による返品は基本的にお断りしていますが、ご事情がある場合はご相談ください。</p>
+      </div>
+      <div>
+        <h3 style="font-size:15px;font-weight:500;color:var(--ink);margin-bottom:var(--sp-2)">4. 禁止事項。</h3>
+        <p>本サイトのコンテンツ（テキスト・画像・ロゴなど）の無断転載・複製・商業利用を禁じます。また、当社の名誉を傷つける行為や虚偽の情報の流布も禁止します。</p>
+      </div>
+      <div>
+        <h3 style="font-size:15px;font-weight:500;color:var(--ink);margin-bottom:var(--sp-2)">5. 免責事項。</h3>
+        <p>商品の効果には個人差があります。当社は使用結果について保証するものではありません。また、お客様の誤った使用方法による肌トラブルについて、当社は責任を負いかねます。</p>
+      </div>
+      <div>
+        <h3 style="font-size:15px;font-weight:500;color:var(--ink);margin-bottom:var(--sp-2)">6. 規約の変更。</h3>
+        <p>本規約は予告なく変更することがあります。変更後の規約は本サイトに掲載した時点で効力を生じます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+
+    <div class="footer-top">
+
+      <div class="footer-brand">
+        <a href="#" style="display:inline-block;line-height:1">
+          <img src="img/logo.png" alt="TARARIN SKINCARE FOR MEN" style="height:80px;width:auto;display:block;">
+        </a>
+        <p>余計なものを省いた、本質だけのメンズスキンケア。20代男性のために設計した、3分で完結するルーティン。</p>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Products</div>
+        <ul class="footer-links">
+          <li><a href="#routine">洗顔料</a></li>
+          <li><a href="#routine">化粧水。</a></li>
+          <li><a href="#routine">保湿クリーム。</a></li>
+          <li><a href="#cta">お試しセット</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Support</div>
+        <ul class="footer-links">
+          <li><a href="#routine">使い方ガイド</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#cta">お問い合わせ</a></li>
+          <li><a href="#cta">返品・交換</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#about">ブランドについて</a></li>
+          <li><a href="#features">成分について</a></li>
+          <li><a href="#privacy">プライバシー</a></li>
+          <li><a href="#terms">利用規約</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 TARARIN All rights reserved.</span>
+      <span class="footer-copy">Made for men who care.</span>
+    </div>
+
+  </div>
+</footer>
+
+
+<!-- ============================================================
+     STICKY CTA BAR (mobile only)
+     ============================================================ -->
+<div class="sticky-cta">
+  <div class="sticky-cta-inner">
+    <div>
+      <div class="sticky-cta-text">お試しセット — 初回50%OFF</div>
+      <div class="sticky-cta-sub">30日返金保証 / 送料無料</div>
+    </div>
+    <a href="#cta" class="btn-primary" style="white-space:nowrap;padding:10px 18px;font-size:12px">
+      今すぐ試す
+    </a>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+/* ── Hero Slider ── */
+var slideIndex = 0;
+var slides     = document.querySelectorAll('.hero-slide');
+var dots       = document.querySelectorAll('.hero-dot');
+var labels     = document.querySelectorAll('.hero-product-label');
+var sliderTimer;
+
+function goSlide(n) {
+  slides[slideIndex].classList.remove('active');
+  dots[slideIndex].classList.remove('active');
+  labels[slideIndex].classList.remove('active');
+  slideIndex = (n + slides.length) % slides.length;
+  slides[slideIndex].classList.add('active');
+  dots[slideIndex].classList.add('active');
+  labels[slideIndex].classList.add('active');
+}
+
+function nextSlide() { goSlide(slideIndex + 1); }
+
+function startSlider() {
+  sliderTimer = setInterval(nextSlide, 5000);
+}
+
+/* ドットクリック時はタイマーをリセット */
+document.querySelectorAll('.hero-dot').forEach(function(dot, i) {
+  dot.addEventListener('click', function() {
+    clearInterval(sliderTimer);
+    goSlide(i);
+    startSlider();
+  });
+});
+
+startSlider();
+
+/* Mobile nav toggle */
+function toggleNav() {
+  document.getElementById('nav').classList.toggle('open');
+}
+
+/* Nav background on scroll */
+window.addEventListener('scroll', function() {
+  const nav = document.getElementById('nav');
+  if (window.scrollY > 60) {
+    nav.style.background = 'rgba(13,13,13,0.98)';
+  } else {
+    nav.style.background = 'rgba(13,13,13,0.85)';
+  }
+});
+
+/* Simple scroll-based fade-in for feature cards */
+const observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+/* Observe feature cards, step cards, testimonial cards */
+document.querySelectorAll('.feature-card, .step-card, .testimonial-card').forEach(function(el) {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>
